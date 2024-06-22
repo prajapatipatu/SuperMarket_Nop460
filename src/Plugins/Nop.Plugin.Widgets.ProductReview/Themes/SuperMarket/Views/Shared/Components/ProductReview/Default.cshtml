@@ -1,0 +1,125 @@
+﻿@model ProductReviewsModel
+
+@using Nop.Core;
+@using Nop.Services.Configuration
+
+@inject Nop.Services.Html.IHtmlFormatter htmlFormatter
+@inject ISettingService settingService
+@inject IStoreContext storeContext
+
+@{
+    var supportRtl = await Html.ShouldUseRtlThemeAsync();
+    var rtl = supportRtl ? "true" : "false";
+
+    var currentStore = await storeContext.GetCurrentStoreAsync();
+    var currentThemeName = await themeContext.GetWorkingThemeNameAsync();
+
+    if (supportRtl)
+    {
+        NopHtml.AddCssFileParts("~/Plugins/SS.Plugin.Widgets.ProductReview/Themes/" + currentThemeName + "/Content/css/styles.rtl.css");
+    }
+    else
+    {
+        NopHtml.AddCssFileParts("~/Plugins/SS.Plugin.Widgets.ProductReview/Themes/" + currentThemeName + "/Content/css/styles.css");
+    }
+
+    <link rel="stylesheet" href="~/lib_npm/magnific-popup/magnific-popup.css" />
+    <script asp-exclude-from-bundle="true" src="~/lib_npm/magnific-popup/jquery.magnific-popup.min.js" asp-location="Footer"></script>
+}
+@if (Model.TotalRating != 0)
+{
+    <div class="ratings-reviews">
+
+        <h2>Ratings & Reviews</h2>
+
+        <div class="review-content-flex">
+            <div class="rate-top">
+                <div class="l_rate">
+                    <div class="dflex">
+                        <span>@Model.RatingAverage</span>
+                        <i class="rate-icon"></i>
+                    </div>
+                    <div class="count">@Model.TotalRating Ratings & Reviews</div>
+                </div>
+                <div class="rate-width">
+                    <div class="l_flex">5* <div class="outer-line"><span style="width:@Model.RatingFivePercent%"></span></div> @Model.RatingFive</div>
+                    <div class="l_flex">4* <div class="outer-line"><span style="width:@Model.RatingFourPercent%"></span></div> @Model.RatingFour</div>
+                    <div class="l_flex">3* <div class="outer-line"><span style="width:@Model.RatingThreePercent%"></span></div> @Model.RatingThree</div>
+                    <div class="l_flex">2* <div class="outer-line"><span class="orange-line" style="width:@Model.RatingTwoPercent%"></span></div> @Model.RatingTwo</div>
+                    <div class="l_flex">1* <div class="outer-line"><span class="red-line" style="width:@Model.RatingOnePercent%"></span></div> @Model.RatingOne</div>
+                </div>
+            </div>
+
+            <div id="product-reivew">
+                <div id="productReview">
+                </div>
+                <div class="rating-pagination" id="product-details-pagination">
+                    <input type="hidden" id="hdncurrentpage" name="hdncurrentpage" value="0" />
+                    <input type="button" value="@T("SS.Plugin.Widgets.ProductReview.First")" onclick="LoadProductReview(0)" />
+                    <input type="button" value="@T("SS.Plugin.Widgets.ProductReview.Previous")" id="btnPrev" onclick="Previous()" />
+                    @{
+                        var total = (int)Math.Ceiling((double)Model.TotalRating / 5);
+                    }
+
+                    @for (int i = 0; i < total; i++)
+                    {
+                        <input type="button" value="@(i + 1)" onclick="LoadProductReview(@i)">
+                    }
+                    <input type="button" value="@T("SS.Plugin.Widgets.ProductReview.Next")" id="btnNext" onclick="Next()" />
+                    <input type="button" value="@T("SS.Plugin.Widgets.ProductReview.Last")" onclick="LoadProductReview(@total - 1)" />
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            LoadProductReview(0);
+            $("#btnPrev").hide();
+        });
+        function Previous() {
+            var index = $('#hdncurrentpage').val();
+            if (index > 0) {
+                index--
+            }
+            LoadProductReview(index)
+        }
+        function Next() {
+            var index = $('#hdncurrentpage').val();
+            index++
+            LoadProductReview(index)
+        }
+        function LoadProductReview(pageIndex) {
+            var index = $('#hdncurrentpage').val(pageIndex);
+            if (pageIndex > 0) {
+                $("#btnPrev").show();
+                $("#btnNext").show();
+            }
+            if (pageIndex == 0) {
+                $("#btnPrev").hide();
+                $("#btnNext").show();
+            }
+            if (pageIndex == @total -1) {
+                $("#btnNext").hide();
+                $("#btnPrev").show();
+            }
+            if (pageIndex == 0 && pageIndex == @total -1) {
+                $("#product-details-pagination").hide();
+            }
+            if (pageIndex == 0 && @total == 0) {
+                $("#product-reivew").hide();
+            }
+            var postData = { productId: @Model.ProductId, pageIndex: pageIndex };
+            addAntiForgeryToken();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ProductReviewAjax", "WidgetProductReview")',
+                cache: false,
+                data: postData,
+                success: function (response) {
+                    $('#productReview').html(response.html);
+                }
+            });
+        }
+    </script>
+}

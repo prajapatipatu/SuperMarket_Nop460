@@ -1,0 +1,99 @@
+﻿@model HeaderLinksModel
+@using Nop.Core.Domain.Customers
+@inject Nop.Core.IWebHelper webHelper
+
+<div class="header-links">
+
+    <ul>
+        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.HeaderLinksBefore, additionalData = Model })
+        <li class="search-icon"><a><i class="fa-solid fa-magnifying-glass"></i></a></li>
+        <li class="mr-1">
+            <div class="dropdown acc-drop">
+                <div class="dropdown-toggle" id="accdrop" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-regular fa-user"></i> <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="accdrop">
+                    @if (Model.IsAuthenticated)
+                    {
+                        <a href="@Url.RouteUrl("CustomerInfo")" class="ico-account">@T("Account.MyAccount")@*@Model.CustomerName*@</a>
+                        <a href="@Url.RouteUrl("Logout")" class="ico-logout">@T("Account.Logout")</a>
+                    }
+                    else
+                    {
+                        var returnUrl = Context.Request.Query.TryGetValue("returnUrl", out var url) && !StringValues.IsNullOrEmpty(url)
+                        ? url.ToString()
+                        : webHelper.GetRawUrl(Context.Request);
+
+                        @if (Model.RegistrationType != UserRegistrationType.Disabled)
+                        {
+                            <a href="@Url.RouteUrl("Register", new { returnUrl })" class="ico-register">@T("Account.Register")</a>
+                        }
+                        <a href="@Url.RouteUrl("Login", new { returnUrl })" class="ico-login">@T("Account.Login")</a>
+                    }
+                    @if (Model.AllowPrivateMessages)
+                    {
+                        <a href="@Url.RouteUrl("PrivateMessages", new { tab = "" })" class="ico-inbox">
+                            <span class="inbox-label">@T("PrivateMessages.Inbox")</span>
+                            <span class="inbox-unread">@Model.UnreadPrivateMessages</span>
+                        </a>
+                    }
+                </div>
+            </div>
+        </li>
+        
+        @if (Model.WishlistEnabled)
+        {
+            <li class="w-list">
+                <a href="@Url.RouteUrl("Wishlist")" class="ico-wishlist">
+                    <i class="fa-regular fa-heart"></i>
+                    @*<span class="wishlist-label">@T("Wishlist")</span>*@
+                    <span class="wishlist-qty">@Model.WishlistItems</span>
+                </a>
+            </li>
+        }
+        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.HeaderLinksAfter, additionalData = Model })
+        @if (Model.ShoppingCartEnabled)
+        {
+            
+            <li id="topcartlink">
+                <a class="ico-cart toggle-cart">
+                    <p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag">
+                             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                        </svg>
+                        <span class="cart-qty">@Model.ShoppingCartItems</span>
+                    </p>
+                    @*<span class="cart-label">@T("SS.ShoppingCart")</span>*@
+                </a>
+            </li>
+            <li class="menu-icon menu-nav-toggle">
+                <a><span class="span-first"></span><span class="sm"></span><span></span></a>
+            </li>
+        }
+        
+    </ul>
+
+
+    @if (Model.AllowPrivateMessages && !string.IsNullOrEmpty(Model.AlertMessage))
+    {
+        //new private message notification
+        <script asp-location="Footer">
+            $(document).ready(function () {
+                displayPopupNotification('@Html.Raw(JavaScriptEncoder.Default.Encode(Model.AlertMessage))', 'success', false);
+            });
+        </script>
+    }
+    @if (Model.ShoppingCartEnabled)
+    {
+        <script asp-location="Footer">
+            $(document).ready(function () {
+                $(".toggle-cart").on("click",function(){
+                    $(".flyout-cart").toggleClass('active');
+                    $(".drawer__overlay").toggleClass('active');
+                });
+            });
+        </script>
+    }
+</div>

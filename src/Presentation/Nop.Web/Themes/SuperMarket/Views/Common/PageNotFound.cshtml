@@ -1,0 +1,21 @@
+﻿@{
+    Layout = "_ColumnsOne";
+
+    //title
+    NopHtml.AddTitleParts(T("PageTitle.PageNotFound").Text);
+    //page class
+    NopHtml.AppendPageCssClassParts("html-not-found-page");
+}
+<div class="page not-found-page">
+    <div class="page-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="not-found-text">
+                        @await Component.InvokeAsync(typeof(TopicBlockViewComponent), new { systemName = "PageNotFound" })
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
+</div>

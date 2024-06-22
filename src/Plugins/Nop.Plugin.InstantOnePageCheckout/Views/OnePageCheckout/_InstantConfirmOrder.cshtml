@@ -1,0 +1,73 @@
+﻿@model ShoppingCartModel
+
+<div class="order-summary-content">
+    @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.OrderSummaryContentBefore, additionalData = Model })
+    @if (Model.Items.Count > 0)
+    {
+        @if (Model.IsEditable && Model.Items.Count > 0 && Model.DisplayTaxShippingInfo)
+        {
+            var inclTax = await workContext.GetTaxDisplayTypeAsync() == TaxDisplayType.IncludingTax;
+            //tax info is already included in the price (incl/excl tax). that's why we display only shipping info here
+            //of course, you can modify appropriate locales to include VAT info there
+            <div class="tax-shipping-info">
+                @T(inclTax ? "Nop.Plugin.InstantOnePageCheckout.ShoppingCart.TaxShipping.InclTax" : "Nop.Plugin.InstantOnePageCheckout.ShoppingCart.TaxShipping.ExclTax", Url.RouteTopicUrl("shippinginfo"))
+            </div>
+        }
+        <div class="cart-options">
+            @if (Model.IsEditable)
+            {
+                <form id="instantcheckout-attributes-form">
+                @await Html.PartialAsync("_InstantCheckoutAttributes", Model)
+                </form>
+            }
+            @await Component.InvokeAsync("SelectedCheckoutAttributes")
+        </div>
+        <div class="cart-footer">
+            @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.OrderSummaryCartFooter, additionalData = Model })
+            @if (Model.IsEditable)
+            {
+                <div class="cart-collaterals">
+                    <div class="deals">
+                        @await Html.PartialAsync("_InstantDiscountBox", Model.DiscountBox)
+                        @await Html.PartialAsync("_InstantGiftCardBox", Model.GiftCardBox)
+                        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.OrderSummaryContentDeals, additionalData = Model })
+                    </div>
+                </div>
+            }
+            <div class="totals">
+                @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.OrderSummaryTotals, additionalData = Model })
+                @await Component.InvokeAsync("CustomOrderTotals", new { isEditable = Model.IsEditable })
+                @if (Model.IsEditable)
+                {
+                    if (!string.IsNullOrEmpty(Model.MinOrderSubtotalWarning))
+                    {
+                        <div class="min-amount-warning">
+                            @Model.MinOrderSubtotalWarning
+                        </div>
+                    }
+                }
+                @if (Model.IsEditable)
+                {
+                    <div class="addon-buttons">
+                        @*Payment method buttons (e.g. GoogleCheckoutButton, Paypal Express)*@
+                        @foreach (var pm in Model.ButtonPaymentMethodViewComponents)
+                        {
+                            @await Component.InvokeAsync(pm)
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+        @if (Model.IsEditable)
+        {
+            @await Component.InvokeAsync("CrossSellProducts")
+        }
+    }
+    else
+    {
+        <div class="no-data">
+            @T("Nop.Plugin.InstantOnePageCheckout.ShoppingCart.CartIsEmpty")
+        </div>
+    }
+    @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.OrderSummaryContentAfter, additionalData = Model })
+</div>

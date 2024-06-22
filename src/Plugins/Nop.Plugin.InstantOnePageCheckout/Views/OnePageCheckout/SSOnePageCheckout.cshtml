@@ -1,0 +1,320 @@
+﻿@model OnePageCheckoutModel
+
+@{
+    Layout = "_ColumnsOne";
+
+    var storeLocation = webHelper.GetStoreLocation();
+
+    //title
+    NopHtml.AddTitleParts(T("PageTitle.Checkout").Text);
+    //page class
+    NopHtml.AppendPageCssClassParts("html-checkout-page hide-header");
+
+    var supportRtl = await Html.ShouldUseRtlThemeAsync();
+
+}
+
+@{
+    // Don't Remove this commented Script
+    //var currentThemeName = await themeContext.GetWorkingThemeNameAsync();
+    //NopHtml.AddScriptParts(ResourceLocation.Footer, "~/Plugins/SS.Plugin.InstantOnePageCheckout/Themes/" + currentThemeName + "/Scripts/loadingoverlay.min.js");
+            //NopHtml.AddScriptParts(ResourceLocation.Footer, "~/Plugins/SS.Plugin.InstantOnePageCheckout/Themes/" + currentThemeName + "/Scripts/loadingoverlay_progress.min.js");
+            //NopHtml.AddScriptParts(ResourceLocation.Footer, "~/Plugins/SS.Plugin.InstantOnePageCheckout/Themes/" + currentThemeName + "/Scripts/common.onepagecheckout.js");
+    //NopHtml.AddScriptParts(ResourceLocation.Footer, "~/Plugins/SS.Plugin.InstantOnePageCheckout/Themes/" + currentThemeName + "/Scripts/instantonepagecheckout.js");
+
+    //NopHtml.AppendCssFileParts($"~/Plugins/SS.Plugin.InstantOnePageCheckout/Themes/{currentThemeName}/Content/css/font-awesome.min.css");
+    //NopHtml.AppendCssFileParts($"~/Plugins/SS.Plugin.InstantOnePageCheckout/Themes/{currentThemeName}/Content/css/SSOnePageCheckOut.css");
+
+    <script asp-exclude-from-bundle="true" src="~/Plugins/Nop.Plugin.InstantOnePageCheckout/Scripts/loadingoverlay.min.js" asp-location="Footer"></script>
+    <script asp-exclude-from-bundle="true" src="~/Plugins/Nop.Plugin.InstantOnePageCheckout/Scripts/loadingoverlay_progress.min.js" asp-location="Footer"></script>
+    <script asp-exclude-from-bundle="true" src="~/Plugins/Nop.Plugin.InstantOnePageCheckout/Scripts/common.onepagecheckout.js" asp-location="Footer"></script>
+    <script asp-exclude-from-bundle="true" src="~/Plugins/Nop.Plugin.InstantOnePageCheckout/Scripts/instantonepagecheckout.js" asp-location="Footer"></script>
+
+    if(supportRtl){
+        <link rel="stylesheet" href="~/Plugins/Nop.Plugin.InstantOnePageCheckout/Content/css/SSOnePageCheckOut.rtl.css" />
+    }
+    else
+    {
+        <link rel="stylesheet" href="~/Plugins/Nop.Plugin.InstantOnePageCheckout/Content/css/SSOnePageCheckOut.css" />        
+    }
+}
+
+
+<div class="page checkout-page">
+    <div class="checkout-page-head">
+        @await Component.InvokeAsync(typeof(LogoViewComponent))
+         <h1>@T("Nop.Plugin.InstantOnePageCheckout.Checkout")</h1>
+    </div>
+    <div class="page-body checkout-data">
+        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.OpcContentBefore, additionalData = Model })
+        <div class="ss-one-flex">
+            <div class="ss-one-left">
+                <div id="opc-billing">
+                    <div class="step-title ss-one-title">
+                        <h2 class="title">@T("Nop.Plugin.InstantOnePageCheckout.Checkout.BillingAddress")</h2>
+                        <a onclick="Billing.ShowAddressDialog()"><span class="plus"></span></a>
+                    </div>
+                    <div id="divpartialbillingaddresslist">
+                        @await Html.PartialAsync("PartialBillingAddressList", Model.BillingAddress)
+                    </div>
+                </div>
+                <div id="divShipToSameAddress">
+                    @if (Model.BillingAddress.ShipToSameAddressAllowed)
+                    {
+                        <div class="section ship-to-same-address ss-ship-check">
+                            <p class="selector">
+                                <input asp-for="@Model.BillingAddress.ShipToSameAddress" onchange="Shipping.shippingAddresschange(this);" />
+                                <label asp-for="@Model.BillingAddress.ShipToSameAddress">@T("Nop.Plugin.InstantOnePageCheckout.Checkout.ShipToSameAddress")</label>
+                            </p>
+                        </div>
+                        if (Model.BillingAddress.ShipToSameAddress)
+                        {
+                            <script asp-location="Footer">
+                                $("#divShippingAddress").hide();
+                                $("#divpartialshippingaddresslist").html('');
+                            </script>
+                        }
+                        else
+                        {
+                            <script asp-location="Footer">
+                                $("#divShippingAddress").show();
+                                Shipping.getShippingAddress();
+                            </script>
+                        }
+                    }
+                    else
+                    {
+                        <script asp-location="Footer">
+                            $("#divShippingAddress").show();
+                            Shipping.getShippingAddress();
+                        </script>
+                    }
+                </div>
+                <div id="divShippingAddress" style="display:none;">
+                    <div class="step-title ss-one-title" id="divShippingAddressHeader">
+                        <h2 class="title">@T("Nop.Plugin.InstantOnePageCheckout.Checkout.ShippingAddress")</h2>
+                        <a onclick="Shipping.showNewAddress()"><span class="plus"></span></a>
+                    </div>
+                    <div id="divpartialshippingaddresslist">
+                    </div>
+                </div>
+            </div>
+
+            <div class="ss-one-right">
+                @if (Model.ShippingRequired)
+                {
+                    <div id="divShippingMethod">
+                        <div class="step-title">
+                            <h2 class="title">@T("Nop.Plugin.InstantOnePageCheckout.Checkout.ShippingMethod")</h2>
+                        </div>
+                        <div id="checkout-step-shipping-method" class="step a-item" style="display: none;">
+                            <form id="co-shipping-method-form" action="" method="post">
+                                <div id="checkout-shipping-method-load">
+                                    @*shipping methods content will be loaded here*@
+                                </div>
+                                <script asp-location="Footer">
+                                    ShippingMethod.getShippingMethod();
+
+                                    var localized_data = {
+                                        NotAvailableMethodsError: "@T("ShippingMethod.NotAvailableMethodsError")",
+                                        SpecifyMethodError: "@T("ShippingMethod.SpecifyMethodError")"
+                                    };
+                                    ShippingMethod.init('#co-shipping-method-form', '@(storeLocation)onepagecheckout/OpcSaveShippingMethod/', localized_data);
+                                </script>
+                            </form>
+                        </div>
+                    </div>
+                }
+                <div id="divPaymentMethod">
+                    <div class="step-title">
+                        <h2 class="title">@T("Nop.Plugin.InstantOnePageCheckout.Checkout.PaymentMethod")</h2>
+                    </div>
+                    <div id="checkout-step-payment-method" class="step a-item" style="display: none;">
+                        <form action="" id="co-payment-method-form" method="post">
+                            <div id="checkout-payment-method-load">
+                                @*payment methods content will be loaded here*@ Payment is not required
+                            </div>
+                        </form>
+                        <script asp-location="Footer">
+                            PaymentMethod.getPaymentMethod();
+                            var localized_data = {
+                                NotAvailableMethodsError: "@T("PaymentMethod.NotAvailableMethodsError")",
+                                SpecifyMethodError: "@T("PaymentMethod.SpecifyMethodError")"
+                            };
+                            PaymentMethod.init('#co-payment-method-form', '@(storeLocation)onepagecheckout/OpcSavePaymentMethod/', localized_data);
+                        </script>
+                    </div>
+                </div>
+                <div id="divPaymentInfoMethod">
+                    <div class="step-title">
+                        <h2 class="title">@T("Nop.Plugin.InstantOnePageCheckout.Checkout.PaymentInfo")</h2>
+                    </div>
+                    <div id="checkout-step-payment-info" class="step a-item" style="display: none;">
+                        <form action="" id="co-payment-info-form" method="post">
+                            <div id="checkout-payment-info-load">
+                                @*payment info content will be loaded here*@ Payment is not required
+                            </div>
+                        </form>
+                        <script asp-location="Footer">
+                            //PaymentInfo.init('#co-payment-info-form', '@(storeLocation)onepagecheckout/OpcSavePaymentInfo/');
+                        </script>
+                        <div class="buttons" id="payment-info-buttons-container">
+                        </div>
+                    </div>
+                </div>
+                <div id="divConfirmMethod">
+                    <div class="step-title">
+                        <h2 class="title">@T("Nop.Plugin.InstantOnePageCheckout.Checkout.ConfirmOrder")</h2>
+                    </div>
+                    <div id="checkout-step-confirm-order" class="step a-item" style="display: block;">
+                        <div id="checkout-confirm-cartview-load">
+                        </div>
+                        <div id="checkout-confirm-order-load">
+                            @*confirm order content will be loaded here*@
+
+                        </div>
+                        <script asp-location="Footer">
+                            ConfirmOrder.init('@(storeLocation)onepagecheckout/OpcConfirmOrder/', '@Url.RouteUrl("CheckoutCompleted")', '#co-payment-info-form');
+                        </script>
+                        <div class="buttons" id="confirm-order-buttons-container">
+                            <button type="button" class="button-1" onclick="ConfirmOrder.save()">@T("Checkout.Progress.Complete")</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.OpcContentAfter, additionalData = Model })
+    </div>
+    <script asp-location="Footer">
+        $(document).ready(function() {
+            $("body").LoadingOverlay("show", {
+                background: "rgba(255, 255, 255, 1)",
+                zIndex: 10101,
+                maxSize: 60
+            });
+
+            OnepageCheckout.showInstantCartView();
+            OnepageCheckout.showInstantConfirmOrder();
+
+            $(document).ajaxStop(function() {
+                $("body").LoadingOverlay("hide");
+            });
+
+            commonOnePageCheckOut.init(
+                "@T("Nop.Plugin.InstantOnePageCheckout.AddressFormValidation.FirstName.Required").Text",
+                "@T("Nop.Plugin.InstantOnePageCheckout.AddressFormValidation.LastName.Required").Text",
+                "@T("Nop.Plugin.InstantOnePageCheckout.AddressFormValidation.Email.Required").Text",
+                "@T("Nop.Plugin.InstantOnePageCheckout.AddressFormValidation.Company.Required").Text",
+                "@T("Nop.Plugin.InstantOnePageCheckout.AddressFormValidation.City.Required").Text",
+                "@T("Nop.Plugin.InstantOnePageCheckout.AddressFormValidation.Address1.Required").Text",
+                "@T("Nop.Plugin.InstantOnePageCheckout.AddressFormValidation.ZipPostalCode.Required").Text",
+                "@T("Nop.Plugin.InstantOnePageCheckout.AddressFormValidation.PhoneNumber.Required").Text",
+                "@T("Nop.Plugin.InstantOnePageCheckout.AddressFormValidation.Country.Required").Text",
+                '@Model.BillingAddress.BillingNewAddress.CompanyRequired',
+                "@T("Nop.Plugin.InstantOnePageCheckout.AddressFormValidation.StateProvince.Required").Text",
+            );
+        });
+    </script>
+
+</div>
+
+@*billing dialog popup*@
+<div id="billingaddressdialog" class="ss-address" style="display: none" align="center">
+    <div id="checkout-step-billing" class="step a-item"></div>
+</div>
+<script asp-location="Footer">
+    Billing.init('#co-billing-form', '@(storeLocation)onepagecheckout/OpcSaveBilling/',
+    @(Model.DisableBillingAddressCheckoutStep.ToString().ToLowerInvariant()),
+    @((await _customerService.IsGuestAsync(await workContext.GetCurrentCustomerAsync())).ToString().ToLowerInvariant()), '@(storeLocation)onepagecheckout/UpdateCustomerBillingAddress/');
+
+    $("#billingaddressdialog").dialog({
+        modal: true,
+        autoOpen: false,
+        title: "@T("Nop.Plugin.InstantOnePageCheckout.Checkout.BillingAddress")",
+        width: '50%',
+        height: 'auto',
+        position: {
+            my: 'center',
+            at: 'center',
+            of: window
+        }
+    });
+
+    $('#billingaddressdialog').on('dialogclose', function(event) {
+        $('div.billingvalid').remove();
+    });
+
+    $(document).ready(function() {
+        Billing.showNewAddress();
+    });
+
+</script>
+
+@*shipping dialog popup*@
+<div id="shippingaddressdialog" class="ss-address" style="display: none" align="center">
+    <form id="co-shipping-form" action="" method="post">
+        <div id="checkout-step-shippingaddress" class="step a-item"></div>
+    </form>
+</div>
+<script asp-location="Footer">
+    Shipping.init('#co-shipping-form', '#co-shipping-pickupstore-form', '@(storeLocation)onepagecheckout/OpcSaveShipping/', '@(storeLocation)onepagecheckout/UpdateCustomerShippingAddress/');
+
+    $("#shippingaddressdialog").dialog({
+        modal: true,
+        autoOpen: false,
+        title: "@T("Checkout.ShippingAddress")",
+        width: '50%',
+        height: 'auto',
+        position: {
+            my: 'center',
+            at: 'center',
+            of: window
+        }
+    });
+
+    $('#shippingaddressdialog').on('dialogclose', function(event) {
+        $('div.shippingvalid').remove();
+    });
+
+</script>
+<script asp-location="Footer">
+    if (Billing.disableBillingAddressCheckoutStep) {
+        $('#opc-billing').hide();
+        Billing.save();
+    }
+</script>
+
+<div id="dialog-confirm" title="Alert" style="display: none" align="center">
+    <input type="hidden" id="deleteaddressid"  name="deleteaddressid"/>  
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>These address will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+ 
+
+<script asp-location="Footer">
+    $(document).on('click', '.deleteAddress', function() {
+        $('#deleteaddressid').val($(this).data('addressid'));
+
+        $( "#dialog-confirm" ).dialog({
+              resizable: false,
+              dialogClass:"dialog-confirm",
+              height: "auto",
+              width: 400,
+              modal: true,
+              buttons: {
+                Delete: function() {
+                    deleteAddress();
+                },
+                Cancel: function() {
+                  $(this).dialog("close");
+                }
+              }
+        });
+    });
+
+function deleteAddress() {
+        var addressId = $('#deleteaddressid').val();
+        Billing.deleteAddress('@(storeLocation)onepagecheckout/DeleteEditAddress/', addressId);
+}
+</script>

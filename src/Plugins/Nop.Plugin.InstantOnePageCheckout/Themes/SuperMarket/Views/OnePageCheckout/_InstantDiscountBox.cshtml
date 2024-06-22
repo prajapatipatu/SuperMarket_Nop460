@@ -1,0 +1,31 @@
+﻿@model ShoppingCartModel.DiscountBoxModel
+@if (Model.Display)
+{
+    <div class="coupon-box">
+        <div class="title">
+            <strong>@T("Nop.Plugin.InstantOnePageCheckout.ShoppingCart.DiscountCouponCode")</strong>
+        </div>
+        <div class="coupon-code">
+            <input placeholder="@T("Nop.Plugin.InstantOnePageCheckout.ShoppingCart.DiscountCouponCode.Tooltip")" name="discountcouponcode" id="discountcouponcode" type="text" class="discount-coupon-code" aria-label="@T("Nop.Plugin.InstantOnePageCheckout.ShoppingCart.DiscountCouponCode.Label")" />
+
+            <button type="button" name="applydiscountcouponcode" id="applydiscountcouponcode" class="button-2 apply-discount-coupon-code-button">@T("Nop.Plugin.InstantOnePageCheckout.ShoppingCart.DiscountCouponCode.Button")</button>
+        </div>
+        <div id="showdiscountmessage"></div>
+
+        @foreach (var discount in Model.AppliedDiscountsWithCodes)
+        {
+            <div class="current-code">
+                <span class="applied-discount-code">@string.Format(T("Nop.Plugin.InstantOnePageCheckout.ShoppingCart.DiscountCouponCode.CurrentCode").Text, discount.CouponCode)</span>
+                <button type="button" name="removediscount-@discount.Id" class="remove-discount-button" onclick=OnepageCheckout.removeDiscount(@discount.Id)></button>
+            </div>
+        }
+    </div>
+    <script asp-location="Footer">
+        $(document).ready(function() {
+            $('#applydiscountcouponcode').click(function() {
+                var discountcouponcode = $('#discountcouponcode').val();
+                OnepageCheckout.applyDiscountCouponCode(discountcouponcode)
+            });
+        });
+    </script>
+}

@@ -1,0 +1,67 @@
+.ratings-reviews{margin:40px 0;}
+.ratings-reviews h2{margin: 0 0 25px;font-size: 24px; line-height: 1;  font-weight: 500;  text-transform: capitalize;  color: #2b2f4c;}
+
+.product-review-helpfulness .fas.fa-thumbs-down{position:relative;top:2px;}
+
+.product-review-item .review-info a, .product-review-helpfulness .vote{font-size: 16px;}
+
+.product-review-item .review-title{color: #313131;font-family: 'Poppins',sans-serif;font-size:17px;margin:0 0 5px;}
+.product-review-item .review-title strong{font-weight:600;}
+.product-review-item .review-title,
+.product-review-item .product-review-box{float:none;}
+
+.rate-top{margin:0 0 10px;background: #fff;padding: 20px;border-radius:10px;}
+.rate-top .count{font-size: 14px;font-weight: 500;color:#253237;}
+.rate-top .l_rate{margin-bottom:20px;}
+.rate-top .dflex{display:flex;align-items:center;}
+.rate-top .dflex .count{font-size: 14px;color: #878787;}
+.rate-top .dflex span{display: inline-block;  font-size: 32px;   color: #253237;    margin-right: 5px;    font-weight: 700;}
+.rate-top .dflex .rate-icon{width:25px;height:25px;background:url('../images/rating-rev.svg')no-repeat center center;}
+.rate-top .rate-width{}
+.rate-top .rate-width .l_flex{display:flex;margin:0 0 4px;align-items:center;font-weight:500;color: #253237; }
+.rate-top .rate-width .l_flex .outer-line{position: relative; background: #f0f0f0;  margin-top: 0;    margin-left: 7px;    margin-right: 7px;    height: 5px;    border-radius: 0;    width: 220px;    border: 1px solid #e5e5e5;}
+.rate-top .rate-width .l_flex .outer-line span{left: 0; position: absolute; width: 0; -webkit-transform: scaleX(1); transform: scaleX(1);    -webkit-transform-origin: left center;    transform-origin: left center;    transition: -webkit-transform .4s cubic-bezier(0,0,.3,1) .3s;    transition: transform .4s cubic-bezier(0,0,.3,1) .3s;    transition: transform .4s cubic-bezier(0,0,.3,1) .3s,-webkit-transform .4s cubic-bezier(0,0,.3,1) .3s;height: 5px;    border-radius: 0;    background-color: #0aad0a;}
+.rate-top .rate-width .l_flex .outer-line span.orange-line{background-color: #ff9f00;}
+.rate-top .rate-width .l_flex .outer-line span.red-line{background-color: #ff6161;}
+.ratings-reviews .product-review-list{border-top:none;}
+
+.rate-img-list{margin:0 0 15px;float:left;}
+.rating-thumbs a{display:inline-block;margin-right:5px;}
+.rating-thumbs .img-height{width: 62px; height: 62px;max-width:100%;border-radius: 2px; background-position: 50% center, 50% center;    background-repeat: no-repeat, no-repeat;    background-size: cover, 20% !important;    position: relative;    overflow: hidden;    cursor: pointer;}
+
+.rating-pagination{background: #fff; padding: 20px; border-radius:10px;}
+.rating-pagination input{outline:0;border:none;min-width: 35px;height: 35px; font-weight:500; border: 1px solid #ddd; background-color: #fff;   padding: 8px;    text-align: center;    font-size: 14px;    cursor: pointer; margin:0 0 5px;line-height:1;}
+.rating-pagination input:hover{border: 1px solid #0aad0a;background-color: #fff; }
+.rating-pagination input.active{background-color: #4ab2f1;color:#fff;background-color: #fff; }
+
+.write-review .inputs input[type="url"]{min-height: 40px;}
+
+.popup-youtube{width:62px;height:62px;float:left;margin:0 0 15px 0;border:1px solid #eee;background:url(../images/youtube_icn.png)no-repeat center center;border-radius:4px;}
+.clr{clear:both;display:block;}
+
+
+.inputs.reviw-flex label{opacity:0;}
+.review-result{margin:0;}
+.review-result li{margin:0 0 10px;font-size:14px;}
+.review-result li a{background: #dc3545;padding: 5px;color: #fff !important;font-size: 11px;margin-left: 10px;font-weight:600;}
+
+.show-read-more .more-text{ display: none;   }
+.show-read-more .read-more{color: #4ab2f1;white-space:nowrap;}
+
+@media all and (min-width: 992px){
+    .rate-top .l_rate{margin-right:20px;}
+    .inputs.reviw-flex {
+        display: flex;
+    }
+    .review-result li {
+        text-align: left;
+    }
+    .rate-top {display: flex;white-space: nowrap;align-items:center;}
+    .rate-top .dflex{justify-content:center;}
+}
+
+@media all and (max-width: 991px) {
+    .rate-top{justify-content:center;}
+    .review-content .a_flex{display:flex;}
+    .inputs.reviw-flex label{display:none;}
+}

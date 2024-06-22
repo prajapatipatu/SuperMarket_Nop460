@@ -1,0 +1,21 @@
+﻿@model CheckoutShippingAddressModel
+
+<div class="checkout-data">
+    @if (Model.PickupPointsModel == null || !Model.PickupPointsModel.PickupInStoreOnly)
+    {
+        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.OpCheckoutShippingAddressTop, additionalData = Model })
+
+        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.OpCheckoutShippingAddressMiddle, additionalData = Model })
+        <div class="section new-shipping-address" id="shipping-new-address-form">
+            <div class="enter-address">
+                <div asp-validation-summary="ModelOnly" class="message-error"></div>
+                @{
+                    var dataDictAddress = new ViewDataDictionary(ViewData);
+                    dataDictAddress.TemplateInfo.HtmlFieldPrefix = "ShippingNewAddress";
+                    @await Html.PartialAsync("_InstantOpcShippingCreateOrUpdateAddress", Model.ShippingNewAddress, dataDictAddress)
+                }
+            </div>
+        </div>
+        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.OpCheckoutShippingAddressBottom, additionalData = Model })
+    }
+</div>

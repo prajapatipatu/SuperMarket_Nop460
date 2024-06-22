@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Language Name="English">
+
+    <LocaleResource Name="SS.Call.Us.Now">
+        <Value>Call Us</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Call.Us.Now.Number">
+        <Value>+000 0000 000</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Product.New.Label">
+        <Value>New</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Category.Title">
+        <Value>Our Categories</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.OverView.Title">
+        <Value>Overview</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Specifications.Title">
+        <Value>Specifications</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Tags.Title">
+        <Value>Tags</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Account.Login.Title">
+        <Value>Sign In</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Account.Signup.Title">
+        <Value>SignUp</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Account.Need.Title">
+        <Value>Don't have an account?</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Cart.View.Btn">
+        <Value>View Cart</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.ShoppingCart">
+        <Value>My Cart</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Newsletter.Title">
+        <Value>Sign Up For Newsletter</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Newsletter.Desc">
+        <Value>There are many variations of lorem ipsum...</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Filter.Title">
+        <Value>Filter</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Account.SignIn.Title">
+        <Value>Already have an account?</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Account.SignIn.Text">
+        <Value>Sign in</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.ShoppingCart.Title">
+        <Value>Shop Cart</Value>
+    </LocaleResource>
+
+</Language>

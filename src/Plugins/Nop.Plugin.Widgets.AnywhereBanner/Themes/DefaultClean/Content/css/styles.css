@@ -1,0 +1,8 @@
+.any-banner{margin:0 0 45px;position:relative;}
+.html-home-page .any-banner{margin:45px 0 25px;}
+.any-banner a{display:block;padding:10px 0;}
+.any-banner img{width:100%;width:auto;height:auto;max-width:100%;width:100%;}
+
+@media (max-width: 1000px){
+  .html-home-page .any-banner{margin:30px 0 15px;}
+}

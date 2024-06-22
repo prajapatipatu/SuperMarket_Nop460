@@ -1,0 +1,112 @@
+﻿@model CheckoutBillingAddressModel
+
+@{
+    var storeLocation = webHelper.GetStoreLocation();
+    var customer = await workcontext.GetCurrentCustomerAsync();
+
+}
+@await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.OpCheckoutBillingAddressTop, additionalData = Model })
+@if (Model.ExistingAddresses.Count > 0)
+{
+    var selectedAddress = Model.ExistingAddresses.FirstOrDefault(a => a.Id == customer.BillingAddressId);
+    if (selectedAddress != null)
+    {
+        @if (Model.ShipToSameAddressAllowed && Model.ShipToSameAddress)
+        {
+             <script asp-location="Footer">
+                Shipping.updateCustomerShippingAddress(@selectedAddress.Id);
+            </script>
+        }
+        Model.ExistingAddresses.Remove(selectedAddress);
+    }
+    @if (Model.InvalidExistingAddresses.Count > 0)
+    {
+        <label class="min-amount-warning">
+            @string.Format(T("Nop.Plugin.InstantOnePageCheckout.Checkout.Addresses.Invalid").Text, Model.InvalidExistingAddresses.Count)
+        </label>
+    }
+    <section>
+        <div class="ss-one-address">
+            @if  (selectedAddress != null)
+            {
+                var addressLine = "";
+                addressLine += selectedAddress.FirstName;
+                addressLine += " " + selectedAddress.LastName;
+                if (selectedAddress.StreetAddressEnabled && !string.IsNullOrEmpty(selectedAddress.Address1))
+                {
+                    addressLine += ", " + selectedAddress.Address1;
+                }
+                if (selectedAddress.CityEnabled && !string.IsNullOrEmpty(selectedAddress.City))
+                {
+                    addressLine += ", " + selectedAddress.City;
+                }
+                if (selectedAddress.CountyEnabled && !string.IsNullOrEmpty(selectedAddress.County))
+                {
+                    addressLine += ", " + selectedAddress.County;
+                }
+                if (selectedAddress.StateProvinceEnabled && !string.IsNullOrEmpty(selectedAddress.StateProvinceName))
+                {
+                    addressLine += ", " + selectedAddress.StateProvinceName;
+                }
+                if (selectedAddress.ZipPostalCodeEnabled && !string.IsNullOrEmpty(selectedAddress.ZipPostalCode))
+                {
+                    addressLine += " " + selectedAddress.ZipPostalCode;
+                }
+                if (selectedAddress.CountryEnabled && !string.IsNullOrWhiteSpace(selectedAddress.CountryName))
+                {
+                    addressLine += ", " + selectedAddress.CountryName;
+                }
+
+                //how should we render "FormattedCustomAddressAttributes" here?
+                <div id="@(selectedAddress.Id)" class="big hli ss-address-line">
+                    @(addressLine)
+                    <input id="@(selectedAddress.Id)" type="radio" name="billingaddress" style="visibility: hidden;" />
+                    <div class="ss-action">
+                        <a onclick="Billing.editAddress('@(storeLocation)onepagecheckout/GetAddressById/',@(selectedAddress.Id)); return false;"><span class="edit"></span></a>
+                        <a class="deleteAddress" data-addressid="@selectedAddress.Id"><span class="delete"></span></a>
+                    </div>
+                </div>
+            }
+            @foreach (var address in Model.ExistingAddresses)
+            {
+                var addressLine = "";
+                addressLine += address.FirstName;
+                addressLine += " " + address.LastName;
+                if (address.StreetAddressEnabled && !string.IsNullOrEmpty(address.Address1))
+                {
+                    addressLine += ", " + address.Address1;
+                }
+                if (address.CityEnabled && !string.IsNullOrEmpty(address.City))
+                {
+                    addressLine += ", " + address.City;
+                }
+                if (address.CountyEnabled && !string.IsNullOrEmpty(address.County))
+                {
+                    addressLine += ", " + address.County;
+                }
+                if (address.StateProvinceEnabled && !string.IsNullOrEmpty(address.StateProvinceName))
+                {
+                    addressLine += ", " + address.StateProvinceName;
+                }
+                if (address.ZipPostalCodeEnabled && !string.IsNullOrEmpty(address.ZipPostalCode))
+                {
+                    addressLine += " " + address.ZipPostalCode;
+                }
+                if (address.CountryEnabled && !string.IsNullOrWhiteSpace(address.CountryName))
+                {
+                    addressLine += ", " + address.CountryName;
+                }
+
+                //how should we render "FormattedCustomAddressAttributes" here?
+                <div id="@(address.Id)" class="big ss-address-line">
+                    @(addressLine)
+                    <input id="@(address.Id)" type="radio" name="billingaddress" style="visibility: hidden;" />
+                    <div class="ss-action">
+                        <a onclick="Billing.editAddress('@(storeLocation)onepagecheckout/GetAddressById/',@(address.Id)); return false;"><span class="edit"></span></a>
+                        <a class="deleteAddress" data-addressid="@address.Id"><span class="delete"></span></a>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+}

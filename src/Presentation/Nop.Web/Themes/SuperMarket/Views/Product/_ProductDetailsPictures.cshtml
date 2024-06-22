@@ -1,0 +1,157 @@
+﻿@model ProductDetailsModel
+@{
+    var supportRtl = await Html.ShouldUseRtlThemeAsync();
+    var rtl = supportRtl ? "true" : "false";
+}
+<div class="gallery picture-gallery">
+    @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.ProductDetailsBeforePictures, additionalData = Model })
+    <div class="picture">
+        @if (Model.DefaultPictureZoomEnabled && Model.PictureModels.Count == 1)
+        {
+            <a href="@Model.DefaultPictureModel.FullSizeImageUrl" title="@Model.DefaultPictureModel.Title" id="main-product-img-lightbox-anchor-@Model.Id">
+                <img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" id="main-product-img-@Model.Id" />
+            </a>
+            <script asp-location="Footer">
+                $(document).ready(function () {
+                    $('#main-product-img-lightbox-anchor-@Model.Id').magnificPopup({ type: 'image' });
+                });
+            </script>
+        }
+        else
+        {
+            <img alt="@Model.DefaultPictureModel.AlternateText" src="@Model.DefaultPictureModel.ImageUrl" title="@Model.DefaultPictureModel.Title" id="main-product-img-@Model.Id" />
+        }
+    </div>
+    @if (Model.DefaultPictureZoomEnabled)
+    {
+        <link rel="stylesheet" href="~/lib_npm/magnific-popup/magnific-popup.css" />
+        <script asp-exclude-from-bundle="true" src="~/lib_npm/magnific-popup/jquery.magnific-popup.min.js" asp-location="Footer"></script>
+        <div class="picture-thumbs owl-carousel">
+            @if (Model.PictureModels.Count > 1){
+                @foreach (var picture in Model.PictureModels)
+                {
+                    <a class="thumb-item" href="@picture.FullSizeImageUrl" alt="@picture.AlternateText" title="@picture.Title">
+                        <img src="@picture.ThumbImageUrl" alt="@picture.AlternateText" title="@picture.Title" data-defaultsize="@picture.ImageUrl" data-fullsize="@picture.FullSizeImageUrl" />
+                    </a>
+                }
+            }
+            <!--product videos-->
+            @await Html.PartialAsync("_ProductDetailsVideos", Model)
+        </div>
+        <script asp-location="Footer">
+            $(document).ready(function () {
+                $('.picture-thumbs').magnificPopup(
+                    {
+                        type: 'image',
+                        delegate: 'a',
+                        removalDelay: 300,
+                        gallery: {
+                            enabled: true,
+                            navigateByImgClick: true,
+                            preload: [0, 1],
+                            tPrev: '@T("Media.MagnificPopup.Previous")',
+                            tNext: '@T("Media.MagnificPopup.Next")',
+                            tCounter: '@T("Media.MagnificPopup.Counter")'
+                        },
+                        tClose: '@T("Media.MagnificPopup.Close")',
+                        tLoading: '@T("Media.MagnificPopup.Loading")'
+                    });
+            });
+        </script>
+        <script asp-location="Footer">
+            $(document).ready(function () {
+                $('.thumb-item > img').on('click',
+                    function () {
+                        $('#main-product-img-@Model.Id').attr('src', $(this).attr('data-defaultsize'));
+                        $('#main-product-img-@Model.Id').attr('title', $(this).attr('title'));
+                        $('#main-product-img-@Model.Id').attr('alt', $(this).attr('alt'));
+                        $('#main-product-img-lightbox-anchor-@Model.Id').attr('href', $(this).attr('data-fullsize'));
+                        $('#main-product-img-lightbox-anchor-@Model.Id').attr('title', $(this).attr('title'));
+                    });
+            });
+        </script>
+    }
+    else
+    {
+        <div class="picture-thumbs owl-carousel">
+            @if (Model.PictureModels.Count > 1)
+            {
+                @foreach (var picture in Model.PictureModels)
+                {
+                    <div class="thumb-item">
+                        <img src="@picture.ThumbImageUrl" alt="@picture.AlternateText" title="@picture.Title" data-defaultsize="@picture.ImageUrl" data-fullsize="@picture.FullSizeImageUrl" />
+                    </div>
+                }
+            }
+            <!--product videos-->
+            @await Html.PartialAsync("_ProductDetailsVideos", Model)
+        </div>
+        <script asp-location="Footer">
+            $(document).ready(function () {
+                $('.thumb-item img').on('click',
+                    function () {
+                        $('#main-product-img-@Model.Id').attr('src', $(this).attr('data-defaultsize'));
+                        $('#main-product-img-@Model.Id').attr('title', $(this).attr('title'));
+                        $('#main-product-img-@Model.Id').attr('alt', $(this).attr('alt'));
+                        $('#main-product-img-lightbox-anchor-@Model.Id')
+                            .attr('href', $(this).attr('data-fullsize'));
+                        $('#main-product-img-lightbox-anchor-@Model.Id').attr('title', $(this).attr('title'));
+                    });
+            });
+        </script>
+
+
+        
+    }
+    @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.ProductDetailsAfterPictures, additionalData = Model })
+</div>
+
+<div id="video-dialog" class="video-dialog">
+    <div class="pnp-close">
+        <i class="fa-solid fa-xmark"></i>
+    </div>
+    <iframe class="thumb-item" src="" width="100" height="100" frameborder="0"></iframe>
+</div>
+<div class="showed-popup"></div>
+
+<script asp-asp-location="Footer">
+    $(document).ready(function () {
+        $(".video-thumbs", ".video-gallery").on("click", function () {
+            var src = $(this).attr("data-src");
+            $("iframe", "#video-dialog").attr("src", src);
+            $(".showed-popup").addClass("opened");
+            $("#video-dialog").addClass("showed-pnp");
+        })
+    })
+
+    $(document).on("click", "#video-dialog .pnp-close, .showed-popup", function () {
+        $(".showed-popup").removeClass("opened");
+        $("#video-dialog").removeClass("showed-pnp");
+        $("iframe", "#video-dialog").attr("src", "");
+    });
+</script>
+
+<script asp-location="Footer">
+    $(document).ready(function () {
+        $('.picture-thumbs', '.gallery').owlCarousel({
+            loop: false,
+            margin: 10,
+            rtl: @rtl,
+            dots: true,
+            nav: false,
+            responsive: {
+                0: {
+                    items: 1,
+                    autoWidth: true,
+                },
+                991: {
+                    items: 3,
+                    autoWidth: true,
+                },
+                1000: {
+                    items: 5,
+                }
+            }
+        })
+    });
+</script>

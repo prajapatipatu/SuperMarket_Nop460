@@ -1,0 +1,18 @@
+﻿@model ProductDetailsModel
+
+@if (Model.VideoModels.Any())
+{
+
+    @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.ProductDetailsBeforeVideos, additionalData = Model })
+    @foreach (var video in Model.VideoModels)
+    {
+        <div class="video-gallery">
+            <div class="video-thumbs" data-src="@video.VideoUrl">
+                <div class="video-layer"></div>
+                <iframe class="thumb-item" src="@video.VideoUrl" width="108" height="108" frameborder="0" allow="@video.Allow"></iframe>
+            </div>
+        </div>
+    }
+    @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.ProductDetailsAfterVideos, additionalData = Model })
+
+}

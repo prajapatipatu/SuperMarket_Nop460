@@ -1,0 +1,127 @@
+﻿@model ProductReviewImagesModel
+
+@using Nop.Services.Media;
+@inject IPictureService _pictureService;
+
+@if (Model.Id > 0)
+{
+    <div class="cards-group">
+        <div class="card card-default">
+            <div class="card-body">
+                <div id="product-review-images">
+                    <div style="margin-bottom:10px;">
+                        @if (!string.IsNullOrEmpty(Model.VideoUrl))
+                        {
+                            <div class="d-flex">
+                                <input class="form-control mr-2" id="videoUrl" type="url" value="@Model.VideoUrl" />
+                                <button type="button" data-toggle="modal" data-target="#updateUrl" onclick="updateVideoUrl()" id="videoUrl" name="videoUrl" class="btn btn-primary">Update</button>
+                            </div>
+                        }
+
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.PictureIds))
+                    {
+                        var productIds = Model.PictureIds.Split(",");
+                        <div class="row">
+                            @foreach (var item in productIds)
+                            {
+                                if (!string.IsNullOrEmpty(item))
+                                {
+                                    var pictureThumbnailUrl = await _pictureService.GetPictureUrlAsync(Convert.ToInt32(item));
+                                    <div class="col-md-3 mb-2">
+                                        <div class="mb-1">
+                                            <img src="@pictureThumbnailUrl" style="max-width:100%;" />
+                                        </div>
+                                        <button type="button" data-toggle="modal" data-target="#exampleModal" onclick="deleteProductReview(@item)" id="deleteProductReview-@item" name="deleteProductReview-@item" class="btn btn-danger">
+                                            <i class="far fa-trash-alt"></i>
+                                            @T("Admin.Common.Delete")
+                                        </button>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete product review image modal popup-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">@T("SS.Plugin.Widgets.ProductReview.Areas.Admin.Views.Shared.Components.ProductReviewImages.DeletePicture")</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>@T("SS.Plugin.Widgets.ProductReview.Areas.Admin.Views.Shared.Components.ProductReviewImages.DeleteProductReviewPopup")</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@T("Admin.Common.Cancel")</button>
+                    <button type="button" class="btn btn-danger" id="deleteConfirm">@T("Admin.Common.Delete")</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- update product review video url modal popup-->
+    <div class="modal fade" id="updateUrl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">@T("SS.Plugin.Widgets.ProductReview.Areas.Admin.Views.Shared.Components.ProductReviewImages.UpdateVideoUrl")</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>@T("SS.Plugin.Widgets.ProductReview.Areas.Admin.Views.Shared.Components.ProductReviewImages.UpdateVideoUrlPopup")</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@T("Admin.Common.Cancel")</button>
+                    <button type="button" class="btn btn-primary" id="url">@T("Admin.Common.Update")</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    function deleteProductReview(pictureId) {
+        var postData = { id: @Model.Id, picId: pictureId };
+        $('#deleteConfirm').click(function () {
+            addAntiForgeryToken(postData);
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("DeleteProductReviewImage", "ProductReview")",
+                data: postData,
+                dataType: "json",
+                success: function (data) {
+                    if (data.success) {
+                        window.location.reload();
+                    }
+                }
+            });
+        });
+    }
+    function updateVideoUrl() {
+        var videourl = $("#videoUrl").val();
+        var postData = { id: @Model.Id, videoUrl: videourl };
+        $('#url').click(function () {
+            addAntiForgeryToken(postData);
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("UpdateVideoUrl", "ProductReview")",
+                data: postData,
+                dataType: "json",
+                success: function (data) {
+                    if (data.success) {
+                        window.location.reload();
+                    }
+                }
+            });
+        });
+    }
+</script>

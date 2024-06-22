@@ -1,0 +1,40 @@
+﻿@inherits Nop.Web.Framework.Mvc.Razor.NopRazorPage<TModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Nop.Web.Framework
+@removeTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.InputTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@inject INopHtmlHelper NopHtml
+@inject IWebHelper webHelper
+@inject IWorkContext workContext
+@inject OrderSettings orderSettings
+@inject IWorkContext workcontext
+@inject IThemeContext themeContext
+@inject ICustomerService _customerService
+@inject IDownloadService downloadService
+@inject CatalogSettings catalogSettings
+
+@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@using Nop.Services.Media
+@using Nop.Web.Framework.UI
+@using Nop.Web.Framework.Extensions
+@using System.Text.Encodings.Web
+@using Nop.Services.Events
+@using Nop.Web.Framework.Events
+@using Nop.Web.Framework.Infrastructure
+@using Nop.Web.Models.Catalog
+@using Nop.Web.Framework.Themes
+@using Nop.Web.Models.Checkout
+@using Nop.Web.Models.Common
+@using System.Globalization
+@using Nop.Web.Models.ShoppingCart
+@using Nop.Web.Extensions
+@using Nop.Core
+@using Nop.Core.Domain.Orders
+@using Nop.Core.Domain.Tax
+@using Nop.Core.Domain.Catalog;
+@using System.Text
+@using Nop.Services.Customers
+@using Nop.Core.Domain.Media
+@using Nop.Plugin.InstantOnePageCheckout.Models
+@using Nop.Web.Framework.Mvc.Routing;
+@using Nop.Web.Components;

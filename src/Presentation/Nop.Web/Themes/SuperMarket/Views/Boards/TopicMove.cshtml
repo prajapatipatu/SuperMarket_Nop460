@@ -1,0 +1,38 @@
+﻿@model TopicMoveModel
+@{
+    Layout = "_ColumnsOne";
+
+    //title
+    NopHtml.AddTitleParts(T("Forum.PageTitle.MoveTopic").Text);
+    //page class
+    NopHtml.AppendPageCssClassParts("html-move-topic-page");
+}
+<div class="page move-topic-page">
+    <div class="page-title-top">
+        <div class="container">
+            <div class="page-title">
+                <h1>@T("Forum.MoveTopic")</h1>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container">
+           @await Component.InvokeAsync(typeof(ForumBreadcrumbViewComponent), new { forumTopicId = Model.Id })
+            <form asp-route="TopicMove" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="fieldset">
+                    <div class="form-fields">
+                        <div class="inputs">
+                            <label>@T("Forum.SelectTheForumToMoveTopic")</label>
+                            <select class="w-100" asp-for="ForumSelected" asp-items="@(new SelectList(Model.ForumList, "Value", "Text"))"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button type="submit" class="button-1 submit-forum-topic-button btn btn-primary">@T("Forum.Submit")</button>
+                    <button type="button" class="button-2 cancel-forum-topic-button btn btn-primary" onclick="setLocation('@Url.RouteUrl("TopicSlug", new {id = Model.Id, slug = Model.TopicSeName})')">@T("Forum.Cancel")</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

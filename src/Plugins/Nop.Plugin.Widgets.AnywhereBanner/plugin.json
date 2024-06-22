@@ -1,0 +1,11 @@
+﻿{
+  "Group": "NopPlugins",
+  "FriendlyName": "Anywhere Banner",
+  "SystemName": "Nop.Plugin.Widgets.AnywhereBanner",
+  "Version": "1.00",
+  "SupportedVersions": [ "4.60" ],
+  "Author": "Pratik Prajapati",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Widgets.AnywhereBanner.dll",
+  "Description": "This Plugin is used for put any where banner"
+}

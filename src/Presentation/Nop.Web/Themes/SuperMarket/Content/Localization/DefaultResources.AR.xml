@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Language Name="Arabic">
+    
+  <LocaleResource Name="SS.Call.Us.Now">
+    <Value>اتصل بنا</Value>
+  </LocaleResource>
+  <LocaleResource Name="SS.Call.Us.Now.Number">
+    <Value>+000 0000 000</Value>
+  </LocaleResource>
+
+    <LocaleResource Name="SS.Product.New.Label">
+        <Value>جديد</Value>
+    </LocaleResource>
+
+    <LocaleResource Name="SS.Category.Title">
+        <Value>فئاتنا</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.OverView.Title">
+        <Value>ملخص</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Specifications.Title">
+        <Value>تحديد</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Tags.Title">
+        <Value>العلامات</Value>
+    </LocaleResource>
+
+
+    <LocaleResource Name="SS.Account.Login.Title">
+        <Value>تسجيل الدخول</Value>
+    </LocaleResource>
+    
+    <LocaleResource Name="SS.Account.Signup.Title">
+        <Value>اشتراك</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Account.Need.Title">
+        <Value>ليس لديك حساب؟</Value>
+    </LocaleResource>
+
+    <LocaleResource Name="SS.Cart.View.Btn">
+        <Value>عرض عربة التسوق</Value>
+    </LocaleResource>
+
+    <LocaleResource Name="SS.ShoppingCart">
+        <Value>عربة التسوق الخاصة بي</Value>
+    </LocaleResource>
+
+    <LocaleResource Name="SS.Newsletter.Title">
+        <Value>الاشتراك في النشرة الإخبارية</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Newsletter.Desc">
+        <Value>هناك العديد من الاختلافات في lorem ipsum ...</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Filter.Title">
+        <Value>منقي</Value>
+    </LocaleResource>
+    
+    <LocaleResource Name="SS.Account.SignIn.Title">
+        <Value>هل لديك حساب؟</Value>
+    </LocaleResource>
+    <LocaleResource Name="SS.Account.SignIn.Text">
+        <Value>تسجيل الدخول</Value>
+    </LocaleResource>
+    
+    <LocaleResource Name="SS.ShoppingCart.Title">
+        <Value>عربة التسوق</Value>
+    </LocaleResource>
+    
+    
+</Language>

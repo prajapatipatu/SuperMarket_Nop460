@@ -1,0 +1,20 @@
+﻿@model AnywhereBannerModel
+
+@{
+    const string hideInfoBlockAttributeName = "CategoryPage.HideInfoBlock";
+    var hideInfoBlock = await genericAttributeService.GetAttributeAsync<bool>(await workContext.GetCurrentCustomerAsync(), hideInfoBlockAttributeName);
+
+}
+
+<div asp-validation-summary="All"></div>
+<input asp-for="Id" type="hidden" />
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="form-horizontal">
+            <nop-cards id="anywherebanner-cards">
+                <nop-card asp-name="anywherebanner-info" asp-icon="fas fa-info" asp-title="@T("Nop.Widgets.AnywhereBanner.Areas.Admin.AnywhereBanner.Info")" asp-hide-block-attribute-name="@hideInfoBlockAttributeName" asp-hide="@hideInfoBlock" asp-advanced="false">@await Html.PartialAsync("_CreateOrUpdate.Info", Model)</nop-card>
+            </nop-cards>
+        </div>
+    </div>
+</section>

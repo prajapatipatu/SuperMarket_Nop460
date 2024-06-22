@@ -1,0 +1,16 @@
+﻿@model CheckoutBillingAddressModel
+
+<div class="checkout-data">
+    @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.OpCheckoutBillingAddressMiddle, additionalData = Model })
+    <div class="section new-billing-address" id="billing-new-address-form">
+        <div class="enter-address">
+            <div asp-validation-summary="ModelOnly" class="message-error"></div>
+            @{
+                var dataDictAddress = new ViewDataDictionary(ViewData);
+                dataDictAddress.TemplateInfo.HtmlFieldPrefix = "BillingNewAddress";
+                @await Html.PartialAsync("_InstantOpcCreateOrUpdateAddress", Model.BillingNewAddress, dataDictAddress)
+            }
+        </div>
+    </div>
+    @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.OpCheckoutBillingAddressBottom, additionalData = Model })
+</div>

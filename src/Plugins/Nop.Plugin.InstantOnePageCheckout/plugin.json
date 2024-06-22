@@ -1,0 +1,11 @@
+﻿{
+  "Group": "NopPlugins",
+  "FriendlyName": "OnePage Checkout",
+  "SystemName": "Nop.Plugin.InstantOnePageCheckout",
+  "Version": "1.00",
+  "SupportedVersions": [ "4.60" ],
+  "Author": "Pratik Prajapati",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.InstantOnePageCheckout.dll",
+  "Description": "This Plugin Allows Single page instant chackout"
+} 

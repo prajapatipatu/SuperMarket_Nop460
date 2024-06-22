@@ -1,0 +1,288 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+	  <OutputPath>..\..\Presentation\Nop.Web\Plugins\SS.Plugin.Widgets.ProductReview</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
+    <!--Set this parameter to true to get the dlls copied from the NuGet cache to the output of your project.
+    You need to set this parameter to true if your plugin has a nuget package 
+    to ensure that the dlls copied from the NuGet cache to the output of your project-->
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\Admin\Extensions\**" />
+    <Compile Remove="Themes\Jewellery_C1\**" />
+    <EmbeddedResource Remove="Areas\Admin\Extensions\**" />
+    <EmbeddedResource Remove="Themes\Jewellery_C1\**" />
+    <None Remove="Areas\Admin\Extensions\**" />
+    <None Remove="Themes\Jewellery_C1\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Content\css\styles.css" />
+    <None Remove="Content\css\styles.rtl.css" />
+    <None Remove="Content\images\rating1.png" />
+    <None Remove="Content\images\youtube_icn.png" />
+    <None Remove="logo.jpg" />
+	<None Remove="plugin.json" />
+	<None Remove="Themes\Cosmetic\Content\css\styles.css" />
+	<None Remove="Themes\Cosmetic\Content\css\styles.rtl.css" />
+	<None Remove="Themes\Cosmetic\Content\images\rating-rev.svg" />
+	<None Remove="Themes\Cosmetic\Content\images\youtube_icn.png" />
+	<None Remove="Themes\Cosmetic\Views\Shared\Components\ProductReview\Default.cshtml" />
+	<None Remove="Themes\Cosmetic\Views\Shared\_ProductReviewHelpfulness.cshtml" />
+	<None Remove="Themes\Cosmetic\Views\WidgetProductReview\ProductReviews.cshtml" />
+	<None Remove="Themes\Cosmetic\Views\_ViewImports.cshtml" />
+	<None Remove="Themes\DefaultClean\Views\_ViewImports.cshtml" />
+	<None Remove="Themes\Jewellery\Content\css\styles.css" />
+	<None Remove="Themes\Jewellery\Content\css\styles.rtl.css" />
+	<None Remove="Themes\Jewellery\Content\images\rating-rev.svg" />
+	<None Remove="Themes\Jewellery\Content\images\youtube_icn.png" />
+	<None Remove="Themes\Jewellery\Views\Shared\Components\ProductReview\Default.cshtml" />
+	<None Remove="Themes\Jewellery\Views\Shared\_ProductReviewHelpfulness.cshtml" />
+	<None Remove="Themes\Jewellery\Views\Shared\_ProductReviewsList.cshtml" />
+	<None Remove="Themes\Jewellery\Views\WidgetProductReview\ProductReviews.cshtml" />
+	<None Remove="Themes\Jewellery\Views\_ViewImports.cshtml" />
+	<None Remove="Themes\nGudgets\Content\css\styles.css" />
+	<None Remove="Themes\nGudgets\Content\css\styles.rtl.css" />
+	<None Remove="Themes\nGudgets\Content\images\rating-rev.svg" />
+	<None Remove="Themes\nGudgets\Content\images\youtube_icn.png" />
+	<None Remove="Themes\nGudgets\Views\Shared\Components\ProductReview\Default.cshtml" />
+	<None Remove="Themes\nGudgets\Views\Shared\_ProductReviewHelpfulness.cshtml" />
+	<None Remove="Themes\nGudgets\Views\Shared\_ProductReviewsList.cshtml" />
+	<None Remove="Themes\nGudgets\Views\WidgetProductReview\ProductReviews.cshtml" />
+	<None Remove="Themes\nGudgets\Views\_ViewImports.cshtml" />
+	<None Remove="Themes\Storebox\Content\css\styles.css" />
+	<None Remove="Themes\Storebox\Content\css\styles.rtl.css" />
+	<None Remove="Themes\Storebox\Content\images\rating-rev.svg" />
+	<None Remove="Themes\Storebox\Content\images\youtube_icn.png" />
+	<None Remove="Themes\Storebox\Views\Shared\Components\ProductReview\Default.cshtml" />
+	<None Remove="Themes\Storebox\Views\Shared\_ProductReviewHelpfulness.cshtml" />
+	<None Remove="Themes\Storebox\Views\WidgetProductReview\ProductReviews.cshtml" />
+	<None Remove="Themes\Storebox\Views\_ViewImports.cshtml" />
+	<None Remove="Themes\SuperMarket\Content\css\styles.css" />
+	<None Remove="Themes\SuperMarket\Content\css\styles.rtl.css" />
+	<None Remove="Themes\SuperMarket\Content\images\rating-rev.svg" />
+	<None Remove="Themes\SuperMarket\Content\images\youtube_icn.png" />
+	<None Remove="Themes\SuperMarket\Views\Shared\Components\ProductReview\Default.cshtml" />
+	<None Remove="Themes\SuperMarket\Views\Shared\_ProductReviewHelpfulness.cshtml" />
+	<None Remove="Themes\SuperMarket\Views\WidgetProductReview\ProductReviews.cshtml" />
+	<None Remove="Themes\SuperMarket\Views\_ViewImports.cshtml" />
+	<None Remove="Views\Shared\_ProductReviewsList.cshtml" />
+	<None Remove="Views\WidgetProductReview\ProductReviews.cshtml" />
+	<None Remove="Views\WidgetProductReview\_ProductReviewHelpfulness.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Content\css\styles.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Content\css\styles.rtl.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\images\rating1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Content\images\youtube_icn.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="logo.jpg">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="plugin.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Cosmetic\Content\css\styles.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Cosmetic\Content\css\styles.rtl.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Cosmetic\Content\images\rating-rev.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Cosmetic\Content\images\youtube_icn.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Cosmetic\Views\Shared\Components\ProductReview\Default.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Cosmetic\Views\Shared\_ProductReviewHelpfulness.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Cosmetic\Views\WidgetProductReview\ProductReviews.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Cosmetic\Views\_ViewImports.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\DefaultClean\Views\_ViewImports.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Jewellery\Content\css\styles.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Jewellery\Content\css\styles.rtl.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Jewellery\Content\images\rating-rev.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Jewellery\Content\images\youtube_icn.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Jewellery\Views\Shared\Components\ProductReview\Default.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Jewellery\Views\Shared\_ProductReviewHelpfulness.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Jewellery\Views\WidgetProductReview\ProductReviews.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Jewellery\Views\_ViewImports.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\nGudgets\Content\css\styles.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\nGudgets\Content\css\styles.rtl.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\nGudgets\Content\images\rating-rev.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\nGudgets\Content\images\youtube_icn.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\nGudgets\Views\Shared\Components\ProductReview\Default.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\nGudgets\Views\Shared\_ProductReviewHelpfulness.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\nGudgets\Views\WidgetProductReview\ProductReviews.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\nGudgets\Views\_ViewImports.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Storebox\Content\css\styles.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Storebox\Content\css\styles.rtl.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Storebox\Content\images\rating-rev.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Storebox\Content\images\youtube_icn.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Storebox\Views\Shared\Components\ProductReview\Default.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Storebox\Views\Shared\_ProductReviewHelpfulness.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Storebox\Views\WidgetProductReview\ProductReviews.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\Storebox\Views\_ViewImports.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\SuperMarket\Content\css\styles.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\SuperMarket\Content\css\styles.rtl.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\SuperMarket\Content\images\rating-rev.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\SuperMarket\Content\images\youtube_icn.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\SuperMarket\Views\Shared\Components\ProductReview\Default.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\SuperMarket\Views\Shared\_ProductReviewHelpfulness.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\SuperMarket\Views\WidgetProductReview\ProductReviews.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\SuperMarket\Views\_ViewImports.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Shared\_ProductReviewsList.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Views\WidgetProductReview\ProductReviews.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Shared\_ProductReviewHelpfulness.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj" />
+    <ProjectReference Include="..\..\Presentation\Nop.Web\Nop.Web.csproj" />
+    <ClearPluginAssemblies Include="$(MSBuildProjectDirectory)\..\..\Build\ClearPluginAssemblies.proj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Areas\Admin\Views\_ViewImports.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Shared\Components\ProductReview\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Areas\Admin\Views\ProductReview\Configure.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Areas\Admin\Views\Shared\Components\ProductReviewImages\Default.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Areas\Admin\Views\_ViewImports.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\ResourceString.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\Shared\Components\Default.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\Shared\Components\ProductReview\Default.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\_ViewImports.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+ 
+  <!-- This target execute after "Build" target -->
+  <Target Name="NopTarget" AfterTargets="Build">
+    <MSBuild Projects="@(ClearPluginAssemblies)" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear" />
+  </Target>
+
+</Project>

@@ -1,0 +1,86 @@
+﻿@model WishlistEmailAFriendModel
+@{
+    Layout = "_ColumnsOne";
+
+    //title
+    NopHtml.AddTitleParts(T("PageTitle.WishlistEmailAFriend").Text);
+    //page class
+    NopHtml.AppendPageCssClassParts("html-email-a-friend-page");
+}
+<div class="page email-a-friend-page">
+    <div class="page-body">
+        <div class="container">
+            <div class="form-flex min-auto mt-5 mb-5">
+                <div class="">
+                    <div class="box">
+                        <h2>@T("Wishlist.EmailAFriend.Title")</h2>
+                        @if (Model.SuccessfullySent)
+                        {
+                            <div class="result">
+                                @Model.Result
+                            </div>
+                        }
+                        else
+                        {
+                            <form asp-route="EmailWishlist" method="post">
+                                <div asp-validation-summary="ModelOnly" class="message-error"></div>
+                                <div class="fieldset">
+                                    <div class="form-fields">
+                                        <div class="inputs">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <label asp-for="FriendEmail"></label>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <input asp-for="FriendEmail" class="friend-email form-control" placeholder="@T("Wishlist.EmailAFriend.FriendEmail.Hint")" />
+                                                    <span asp-validation-for="FriendEmail"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="inputs">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <label asp-for="YourEmailAddress"></label>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <input asp-for="YourEmailAddress" class="your-email form-control" placeholder="@T("Wishlist.EmailAFriend.YourEmailAddress.Hint")" />
+                                                    <span asp-validation-for="YourEmailAddress"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="inputs">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <label asp-for="PersonalMessage"></label>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <textarea asp-for="PersonalMessage" placeholder="@T("Wishlist.EmailAFriend.PersonalMessage.Hint")" class="personal-message form-control"></textarea>
+                                                    <span asp-validation-for="PersonalMessage"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @if (Model.DisplayCaptcha)
+                                        {
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <nop-captcha />
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="buttons mb-0">
+                                            <button type="submit" name="send-email" class="button-1 send-email-a-friend-button btn btn-primary">@T("Wishlist.EmailAFriend.Button")</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

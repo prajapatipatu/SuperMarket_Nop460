@@ -1,0 +1,128 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+	  <OutputPath>..\..\Presentation\Nop.Web\Plugins\Nop.Plugin.Widgets.AnywhereBanner</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
+    <!--Set this parameter to true to get the dlls copied from the NuGet cache to the output of your project.
+    You need to set this parameter to true if your plugin has a nuget package 
+    to ensure that the dlls copied from the NuGet cache to the output of your project-->
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\Admin\Extensions\**" />
+    <Compile Remove="Controllers\**" />
+    <Compile Remove="Extensions\**" />
+    <Compile Remove="Themes\Cosmetic\**" />
+    <Compile Remove="Themes\DefaultClean\Views\**" />
+    <Compile Remove="Themes\Jewellery\**" />
+    <Compile Remove="Themes\nGudgets\**" />
+    <Compile Remove="Themes\StoreBoxV1\**" />
+    <Compile Remove="Themes\Storebox\**" />
+    <EmbeddedResource Remove="Areas\Admin\Extensions\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <EmbeddedResource Remove="Extensions\**" />
+    <EmbeddedResource Remove="Themes\Cosmetic\**" />
+    <EmbeddedResource Remove="Themes\DefaultClean\Views\**" />
+    <EmbeddedResource Remove="Themes\Jewellery\**" />
+    <EmbeddedResource Remove="Themes\nGudgets\**" />
+    <EmbeddedResource Remove="Themes\StoreBoxV1\**" />
+    <EmbeddedResource Remove="Themes\Storebox\**" />
+    <None Remove="Areas\Admin\Extensions\**" />
+    <None Remove="Controllers\**" />
+    <None Remove="Extensions\**" />
+    <None Remove="Themes\Cosmetic\**" />
+    <None Remove="Themes\DefaultClean\Views\**" />
+    <None Remove="Themes\Jewellery\**" />
+    <None Remove="Themes\nGudgets\**" />
+    <None Remove="Themes\StoreBoxV1\**" />
+    <None Remove="Themes\Storebox\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="logo.jpg" />
+    <None Remove="logo.png" />
+	<None Remove="plugin.json" />
+	<None Remove="Themes\DefaultClean\Content\css\bootstrap-grid.css" />
+	<None Remove="Themes\DefaultClean\Content\css\owl.carousel.css" />
+	<None Remove="Themes\DefaultClean\Content\css\styles.css" />
+	<None Remove="Themes\DefaultClean\Content\js\owl.carousel.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="plugin.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\DefaultClean\Content\css\bootstrap-grid.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\DefaultClean\Content\css\owl.carousel.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\DefaultClean\Content\css\styles.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Themes\DefaultClean\Content\js\owl.carousel.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj" />
+    <ProjectReference Include="..\..\Presentation\Nop.Web\Nop.Web.csproj" />
+    <ClearPluginAssemblies Include="$(MSBuildProjectDirectory)\..\..\Build\ClearPluginAssemblies.proj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Areas\Admin\Views\_ViewImports.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Views\_ViewImports.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Areas\Admin\Views\AnywhereBanner\Create.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Areas\Admin\Views\AnywhereBanner\Edit.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Areas\Admin\Views\AnywhereBanner\List.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Areas\Admin\Views\AnywhereBanner\_CreateOrUpdate.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Areas\Admin\Views\AnywhereBanner\_CreateOrUpdate.Info.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Areas\Admin\Views\_ViewImports.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\ResourceString.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\Shared\Components\AnywhereBanner\Default.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\_ViewImports.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+ 
+  <!-- This target execute after "Build" target -->
+  <Target Name="NopTarget" AfterTargets="Build">
+    <MSBuild Projects="@(ClearPluginAssemblies)" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear" />
+  </Target>
+
+</Project>

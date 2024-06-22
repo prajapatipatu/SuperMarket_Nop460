@@ -1,0 +1,21 @@
+﻿@model List<string>
+
+@if (Model != null && Model.Count > 0)
+{
+    <style>
+        .error-list {
+            color: #c00;
+            margin: 0 0 20px;
+            text-align:right;
+        }
+    </style>
+    <ul class="error-list">
+        @foreach (var item in Model)
+        {
+            <li>
+                <span>@item</span>
+            </li>
+        }
+    </ul>
+}
+

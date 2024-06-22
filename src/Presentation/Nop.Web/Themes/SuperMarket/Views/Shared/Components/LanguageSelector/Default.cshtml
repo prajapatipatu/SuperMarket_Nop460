@@ -1,0 +1,44 @@
+﻿@model LanguageSelectorModel
+
+@inject Nop.Core.IWebHelper webHelper
+
+@if (Model.AvailableLanguages.Count > 1)
+{
+    var returnUrl = webHelper.GetRawUrl(Context.Request);
+    <div class="language-selector">
+        <div class="dropdown">
+            <div class="dropdown-toggle" type="button" id="dropdownLanguage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img id="langflag" class='images'><div id="languageflag" class="language-flag"></div><i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownLanguage">
+                <ul class="language-list">
+                    @foreach (var lang in Model.AvailableLanguages)
+                    {
+                        <li>
+                            <a href="@Url.RouteUrl("ChangeLanguage", new { langid = lang.Id, returnUrl }, webHelper.GetCurrentRequestProtocol())" title="@lang.Name">
+                                <img title='@lang.Name' alt='@lang.Name' @(lang.Id == Model.CurrentLanguageId ? " class=selected-img" : null) src="@Url.Content("~/images/flags/" + @lang.FlagImageFileName) " />
+                                <span @(lang.Id == Model.CurrentLanguageId ? " class=selected" : null) data-attr="@lang.Name">@lang.Name</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+
+<script asp-location="Footer">
+    $(document).ready(function () {
+        getSelectedLanguageFlag();
+    });
+    var getSelectedLanguageFlag = function () {
+        if ($("img.selected", ".language-selector")) {
+            var spa = $(".selected", ".language-selector").attr("data-attr");
+            var src = $(".selected-img", ".language-selector").attr("src");
+            $("#languageflag").html("<span>" + spa + "</span>");
+            $("#langflag").attr("src",src);
+        }
+    };
+</script>
+
+

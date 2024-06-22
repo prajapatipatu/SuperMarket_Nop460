@@ -1,0 +1,11 @@
+﻿{
+  "Group": "Shivaay Soft",
+  "FriendlyName": "Product Review",
+  "SystemName": "SS.Plugin.Widgets.ProductReview",
+  "Version": "1.00",
+  "SupportedVersions": [ "4.60" ],
+  "Author": "Shivaay Soft",
+  "DisplayOrder": 1,
+  "FileName": "SS.Plugin.Widgets.ProductReview.dll",
+  "Description": "This plugin will provide image and video upload option in product review"
+}

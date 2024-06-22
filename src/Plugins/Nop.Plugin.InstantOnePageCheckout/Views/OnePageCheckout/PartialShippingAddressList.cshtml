@@ -1,0 +1,128 @@
+﻿@model CheckoutShippingAddressModel
+
+@{
+    var customer = await workcontext.GetCurrentCustomerAsync();
+}
+
+@await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.OpCheckoutShippingAddressTop, additionalData = Model })
+@if (Model.ExistingAddresses.Count > 0)
+{
+    var selectedAddress = Model.ExistingAddresses.FirstOrDefault(a => a.Id == customer.ShippingAddressId);
+    if (selectedAddress != null)
+    {
+        Model.ExistingAddresses.Remove(selectedAddress);
+    }
+    <section id="sectionShippingAddress">
+        @if (Model.InvalidExistingAddresses.Count > 0)
+        {
+            <label class="min-amount-warning">
+                @string.Format(T("Nop.Plugin.InstantOnePageCheckout.Checkout.Addresses.Invalid").Text, Model.InvalidExistingAddresses.Count)
+            </label>
+        }
+
+        <div class="ss-one-address">
+             @if(selectedAddress != null)
+            {
+                var addressLine = "";
+                
+                addressLine += selectedAddress.FirstName;
+                addressLine += " " + selectedAddress.LastName;
+                if (selectedAddress.StreetAddressEnabled && !string.IsNullOrEmpty(selectedAddress.Address1))
+                {
+                    addressLine += ", " + selectedAddress.Address1;
+                }
+                if (selectedAddress.CityEnabled && !string.IsNullOrEmpty(selectedAddress.City))
+                {
+                    addressLine += ", " + selectedAddress.City;
+                }
+                if (selectedAddress.CountyEnabled && !string.IsNullOrEmpty(selectedAddress.County))
+                {
+                    addressLine += ", " + selectedAddress.County;
+                }
+                if (selectedAddress.StateProvinceEnabled && !string.IsNullOrEmpty(selectedAddress.StateProvinceName))
+                {
+                    addressLine += ", " + selectedAddress.StateProvinceName;
+                }
+                if (selectedAddress.ZipPostalCodeEnabled && !string.IsNullOrEmpty(selectedAddress.ZipPostalCode))
+                {
+                    addressLine += " " + selectedAddress.ZipPostalCode;
+                }
+                if (selectedAddress.CountryEnabled && !string.IsNullOrWhiteSpace(selectedAddress.CountryName))
+                {
+                    addressLine += ", " + selectedAddress.CountryName;
+                }
+
+                //how should we render "FormattedCustomAddressAttributes" here?
+                <div id="@(selectedAddress.Id)" class="shippingradio shippingborder ss-address-line">
+                    @(addressLine)
+                    <input id="@(selectedAddress.Id)" type="radio" name="shippingaddress" style="visibility: hidden;" />
+                </div>
+            }
+            @foreach (var address in Model.ExistingAddresses)
+            {
+                var addressLine = "";
+                
+                addressLine += address.FirstName;
+                addressLine += " " + address.LastName;
+                if (address.StreetAddressEnabled && !string.IsNullOrEmpty(address.Address1))
+                {
+                    addressLine += ", " + address.Address1;
+                }
+                if (address.CityEnabled && !string.IsNullOrEmpty(address.City))
+                {
+                    addressLine += ", " + address.City;
+                }
+                if (address.CountyEnabled && !string.IsNullOrEmpty(address.County))
+                {
+                    addressLine += ", " + address.County;
+                }
+                if (address.StateProvinceEnabled && !string.IsNullOrEmpty(address.StateProvinceName))
+                {
+                    addressLine += ", " + address.StateProvinceName;
+                }
+                if (address.ZipPostalCodeEnabled && !string.IsNullOrEmpty(address.ZipPostalCode))
+                {
+                    addressLine += " " + address.ZipPostalCode;
+                }
+                if (address.CountryEnabled && !string.IsNullOrWhiteSpace(address.CountryName))
+                {
+                    addressLine += ", " + address.CountryName;
+                }
+
+                //how should we render "FormattedCustomAddressAttributes" here?
+                <div id="@(address.Id)" class="shippingradio ss-address-line">
+                    @(addressLine)
+                    <input id="@(address.Id)" type="radio" name="shippingaddress" style="visibility: hidden;" />
+                </div>
+            }
+        </div>
+    </section>
+}
+@await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.OpCheckoutShippingAddressMiddle, additionalData = Model })
+<form id="co-shipping-pickupstore-form" action="" method="post">
+    @if (Model.DisplayPickupInStore && Model.PickupPointsModel.AllowPickupInStore)
+    {
+        <section class="ss-pickup-store">
+            <div class="step-title">
+                <h2 class="title">@T("Nop.Plugin.InstantOnePageCheckout.PickupInStore")</h2>
+            </div>
+            @await Html.PartialAsync("_PickupPoints", Model.PickupPointsModel)
+            <script>
+                $(document).ready(function () {
+                    $(document).unbind('checkout_toggle_pickup_in_store');
+                    $(document).on('checkout_toggle_pickup_in_store', function (e) {
+                        if (e.checked) {
+                            $('#sectionShippingAddress').hide();
+                            $('#divShippingAddressHeader').hide();
+                            $('#divShipToSameAddress').hide();
+                        } else {
+                            $('#sectionShippingAddress').show();
+                            $('#divShippingAddressHeader').show();
+                            $('#divShipToSameAddress').show();
+                        }
+                    });
+                });
+            </script>
+        </section>
+    }
+</form>

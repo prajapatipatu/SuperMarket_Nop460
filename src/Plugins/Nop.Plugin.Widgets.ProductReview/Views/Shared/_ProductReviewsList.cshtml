@@ -1,0 +1,180 @@
+﻿@using Nop.Core;
+@using Nop.Services.Configuration
+@using Nop.Web.Components;
+@using SS.Plugin.Widgets.ProductReview.Models
+
+@inject Nop.Services.Html.IHtmlFormatter htmlFormatter
+@inject ISettingService settingService
+@inject IStoreContext storeContext
+
+@model List<ProductReviewModel>
+@{
+    var currentStore = await storeContext.GetCurrentStoreAsync();
+}
+
+<div class="product-review-list">
+    @foreach (var review in Model)
+    {
+        var ratingPercent = review.Rating * 20;
+        <div class="product-review-item">
+            <div class="review-item-head">
+                <div class="review-title">
+                    <strong>@review.Title</strong>
+                </div>
+                <div class="product-review-box">
+                    <div class="rating">
+                        <div style="width: @(ratingPercent)%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="review-content">
+                <div class="review-text">
+                    @if (!string.IsNullOrEmpty(review.CustomerAvatarUrl))
+                    {
+                        <div class="avatar">
+                            @if (review.AllowViewingProfiles)
+                            {
+                                <a href="@Url.RouteUrl("CustomerProfile", new { id = review.CustomerId })" class="avatar-img-link">
+                                    <img src="@(review.CustomerAvatarUrl)" class="avatar-img" alt="Avatar" />
+                                </a>
+                            }
+                            else
+                            {
+                                <img src="@(review.CustomerAvatarUrl)" class="avatar-img" alt="Avatar" />
+                            }
+                        </div>
+                    }
+                    <div class="text-body show-read-more">
+                        @Html.Raw(htmlFormatter.FormatText(review.ReviewText, false, true, false, false, false, false))
+                    </div>
+                </div>
+                @foreach (var reviewType in review.AdditionalProductReviewList.Where(x => x.Rating > 0 && x.VisibleToAllCustomers))
+                {
+                    var ratingExtPercent = reviewType.Rating * 20;
+                    <div class="review-type-rating-ext">
+                        <div class="review-title">
+                            <i>@reviewType.Name</i>
+                        </div>
+                        <div class="product-review-box">
+                            <div class="rating">
+                                <div style="width: @(ratingExtPercent)%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="a_flex">
+                    <div class="rate-img-list">
+                        <div class="rating-thumbs">
+                            @foreach (var item in review.PictureUrl)
+                            {
+                                <a href="@item">
+                                    <div class="img-height" style="background:url(@item)no-repeat center center"></div>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                    @if (!string.IsNullOrEmpty(@review.VideoUrl))
+                    {
+                        <a id="video_@review.Id" href="@review.VideoUrl" class="popup-youtube"></a>
+
+                        <script asp-location="Footer">
+                            $(document).ready(function () {
+                                $('#video_@review.Id').magnificPopup({
+                                    type: 'iframe',
+                                    iframe: {
+                                        patterns: {
+                                            youtube: {
+                                                index: '',
+                                                id: function (url) {
+                                                    var m = url.match(/[\\?\\&]v=([^\\?\\&]+)/);
+                                                    if (!m || !m[1]) return null;
+                                                    return m[1];
+                                                },
+                                                src: '@review.VideoUrl'
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+                    }
+                </div>
+                <div class="clr"></div>
+                <div class="review-info">
+                    <span class="user">
+                        <label>@T("Reviews.From"):</label>
+                        @if (review.AllowViewingProfiles)
+                        {
+                            <a href="@Url.RouteUrl("CustomerProfile", new { id = review.CustomerId })">@(review.CustomerName)</a>
+                        }
+                        else
+                        {
+                            <span>@review.CustomerName</span>
+                        }
+                    </span>
+                    <span class="separator">|</span>
+                    <span class="date">
+                        <label>@T("Reviews.Date"):</label>
+                        <span>@review.WrittenOnStr</span>
+                    </span>
+                </div>
+                @await Html.PartialAsync("_ProductReviewHelpfulness", review.Helpfulness)
+
+                @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.ProductReviewsPageInsideReview, additionalData = review })
+                @if (!string.IsNullOrEmpty(review.ReplyText))
+                {
+                    <div class="reply">
+                        <div class="reply-header">
+                            @T("Reviews.Reply")
+                        </div>
+                        <div class="reply-text">
+                            @Html.Raw(htmlFormatter.FormatText(review.ReplyText, false, true, false, false, false, false))
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        @await Component.InvokeAsync(typeof(WidgetViewComponent), new { widgetZone = PublicWidgetZones.ProductReviewsPageBottom, additionalData = Model })
+    }
+</div>
+<script asp-location="Footer">
+    $(document).ready(function () {
+        $('.rating-thumbs').magnificPopup(
+        {
+            type: 'image',
+            delegate: 'a',
+            removalDelay: 300,
+            gallery: {
+                    enabled: true,
+                    navigateByImgClick: true,
+                    preload: [0, 1],
+                    tPrev: '@T("Media.MagnificPopup.Previous")',
+                    tNext: '@T("Media.MagnificPopup.Next")',
+                    tCounter: '@T("Media.MagnificPopup.Counter")'
+                },
+            tClose: '@T("Media.MagnificPopup.Close")',
+            tLoading: '@T("Media.MagnificPopup.Loading")'
+        });
+    });
+</script>
+<script asp-location="Footer">
+    $(document).ready(function () {
+        var maxLength = 400;
+        $(".show-read-more").each(function () {
+            var myStr = $(this).text();
+            if ($.trim(myStr).length > maxLength) {
+                var newStr = myStr.substring(0, maxLength);
+                var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
+                $(this).empty().html(newStr);
+                $(this).append(' <a href="javascript:void(0);" class="read-more">Read more...</a>');
+                $(this).append('<span class="more-text">' + removedStr + '</span>');
+            }
+        });
+        $(".read-more").click(function () {
+            $(this).siblings(".more-text").contents().unwrap();
+            $(this).remove();
+        });
+    });
+</script>

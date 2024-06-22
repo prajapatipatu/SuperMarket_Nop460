@@ -1,0 +1,125 @@
+﻿@model AnywhereBannerDetailsModel
+
+@{
+    var currentThemeName = await themeContext.GetWorkingThemeNameAsync();
+    NopHtml.AddCssFileParts("~/Plugins/Nop.Plugin.Widgets.AnywhereBanner/Themes/" + currentThemeName + "/Content/css/styles.css");
+
+    var supportRtl = await Html.ShouldUseRtlThemeAsync();
+    var rtl = supportRtl ? "true" : "false";
+}
+
+@if (Model.GridType > 0)
+{
+    <div class="any-banner">
+        @{
+            var isMobileDevice = userAgentHelper.IsMobileDevice();
+        }
+        @if (Model.GridType == 10)
+        {
+            @if (!Model.IsSlider)
+            {
+                <div class="row">
+                    @foreach (var item in Model.BannerModels)
+                    {
+                        <div class="col-12 col-md-@Model.Column">
+                            <a href="@item.CTA">
+                                @if (isMobileDevice)
+                                {
+                                    <img width="457" height="311" src="@Html.Raw(item.MobilePictureThumbnailUrl)" />
+                                }
+                                else
+                                {
+                                    <img width="457" height="311" src="@Html.Raw(item.PictureThumbnailUrl)" />
+                                }
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="owl-carousel" id="anywhere-slider-@Model.Id">
+                    @foreach (var item in Model.BannerModels)
+                    {
+                        <a href="@item.CTA">
+                            @if (isMobileDevice)
+                            {
+                                <img width="457" height="311" src="@Html.Raw(item.MobilePictureThumbnailUrl)" />
+                            }
+                            else
+                            {
+                                <img width="457" height="311" src="@Html.Raw(item.PictureThumbnailUrl)" />
+                            }
+                        </a>
+                    }
+                </div>
+                <script asp-location="Footer">
+                    $(document).ready(function () {
+                        $('#anywhere-slider-@Model.Id').owlCarousel({
+                            loop: false,
+                            margin: 20,
+                            autoHeight: true,
+                            rtl: @rtl,
+                            dots: false,
+                            nav: false,
+                            responsive: {
+                                0: {
+                                    margin: 10,
+                                    items: 1
+                                },
+                                991: {
+                                    margin: 10,
+                                    items: 3
+                                },
+                                1000: {
+                                    items: @Model.Column
+                                                    }
+                            }
+                        })
+                    })
+                </script>
+            }
+
+        }
+        else
+        {
+            @if (Model.BannerModels.Count > 0)
+            {
+                <div class="row">
+
+                    <div class="col-md-6">
+                        @foreach (var item in Model.BannerModels.Take(Model.LeftColumn))
+                        {
+                            <a href="@item.CTA">
+                                @if (isMobileDevice)
+                                {
+                                    <img width="200" height="200" src="@Html.Raw(item.MobilePictureThumbnailUrl)" />
+                                }
+                                else
+                                {
+                                    <img width="200" height="200" src="@Html.Raw(item.PictureThumbnailUrl)" />
+                                }
+                            </a>
+                        }
+                    </div>
+                    <div class="col-md-6">
+                        @foreach (var item in Model.BannerModels.Skip(Model.LeftColumn).Take(Model.RightColumn))
+                        {
+                            <a href="@item.CTA">
+                                @if (isMobileDevice)
+                                {
+                                    <img width="200" height="200" src="@Html.Raw(item.MobilePictureThumbnailUrl)" />
+                                }
+                                else
+                                {
+                                    <img width="200" height="200" src="@Html.Raw(item.PictureThumbnailUrl)" />
+                                }
+                            </a>
+                        }
+                    </div>
+                </div>
+
+            }
+        }
+    </div>
+}
